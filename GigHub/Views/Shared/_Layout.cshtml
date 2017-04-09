@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script type = 'text/javascript' >
+        var appInsights=window.appInsights||function(config)
+        {
+            function r(config){ t[config] = function(){ var i = arguments; t.queue.push(function(){ t[config].apply(t, i)})} }
+            var t = { config:config},u=document,e=window,o='script',s=u.createElement(o),i,f;for(s.src=config.url||'//az416426.vo.msecnd.net/scripts/a/ai.0.js',u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.cookie=u.cookie,t.queue=[],i=['Event','Exception','Metric','PageView','Trace','Ajax'];i.length;)r('track'+i.pop());return r('setAuthenticatedUserContext'),r('clearAuthenticatedUserContext'),config.disableExceptionTracking||(i='onerror',r('_'+i),f=e[i],e[i]=function(config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t['_' + i](config, r, u, e, o),s}),t
+        }({
+            instrumentationKey:'937a7b0a-8d71-4e7c-a7e6-9b3c53341a5a'
+        });
+        
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("GigHub", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Add a Gig", "Create", "Gigs")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/app")
+    @RenderSection("scripts", required: false)
+<script type="text/x-template" id="notifications-template">
+    <ul>
+        <%
+        _.each(notifications, funciton(notification){
+        if (notification.type == 1){ %>
+
+        <li><%= notification.gig.artist.name %> has canceled the gig at <%= notification.gig.dateTime %> at <%= notication.gig.dateTime. %></li>
+        <%}
+
+        else if (notification.type == 2) {
+        var changes = [],
+        originalValues = [],
+        newValues = [];
+
+        if(notification.originalVenue != notification.gig.venue){
+        changes.push('venue')
+        originalValues.push(notification.originalVenue);
+        newValues.push(notification.gig.venue);
+        }
+
+        if (notification.originalDateTime != notification.gig.dateTime){
+            changes.push('date/time');
+            originalValues.push(notification.originalDateTime);
+            newValues.push(notification.gig.dateTime);
+        }
+        
+        %>
+        <li><%= notification.gig.artist.name %> has changed the <%= changes.join(' and ') %> of the gig from <%= originalValues.join('/') %> to <%=newValues.join('/') %> </li>
+        <%
+
+        }
+        })
+        %>
+    </ul>
+</script>
+<script>
+    $(document).ready(function() {
+        $.getJSON("/api/notifications", function (notifications) {
+
+                if (notifications.length === 0)
+                    return;
+
+                $(".js-notification-count")
+                    .text(notifications.length)
+                    .removeClass("hide")
+                    .addClass("animated bounceInDown");
+
+                $(".notifications").popover({
+                    html: true,
+                    title: "Notifications",
+                    content: function() {
+                        var compiled = _.template($("#notifications-template").html());
+                        return compiled({ notifications: notifications });
+
+                 
+                    },
+                    placement: "bottom"
+                });
+            });
+    });
+</script>
+</body>
+</html>
