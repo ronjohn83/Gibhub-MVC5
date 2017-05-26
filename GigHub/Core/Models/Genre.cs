@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace GigHub.Core.Models
+namespace GigHub4.Core.Models
 {
     public class Genre
     {

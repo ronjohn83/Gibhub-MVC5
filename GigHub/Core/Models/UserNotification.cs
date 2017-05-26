@@ -1,11 +1,26 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GigHub.Core.Models
+namespace GigHub4.Core.Models
 {
     public class UserNotification
     {
+        private readonly ApplicationUser _user;
+
+        [Key]
+        [Column(Order = 1)]
+        public string UserId { get; private set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public int NotificationId { get; private set; }
+
+        public ApplicationUser User { get; private set; }
+        public Notification Notification { get; private set; }
+
+        public bool IsRead { get; private set; }
+
         protected UserNotification()
         {
             
@@ -19,21 +34,13 @@ namespace GigHub.Core.Models
             if (notification == null)
                 throw new ArgumentNullException("notification");
 
-            User = user;
+            _user = user;
             Notification = notification;
         }
 
-        [Key]
-        [Column(Order = 1)]
-        public string UserId { get; private set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public int NotificationId { get; private set; }
-
-        public ApplicationUser User { get; private set; }
-        public Notification Notification { get; private set; }
-        public bool IsRead { get; set; }
+        public void Read()
+        {
+            IsRead = true;
+        }
     }
-
 }

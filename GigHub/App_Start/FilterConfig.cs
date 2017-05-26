@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace GigHub
+namespace GigHub4
 {
     public class FilterConfig
     {

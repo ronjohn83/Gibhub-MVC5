@@ -1,13 +1,14 @@
 using System.Linq;
 using System.Web.Http;
-using GigHub.Core.Dtos;
-using GigHub.Core.Models;
-using GigHub.Persistance;
+using GigHub4.Core.Dtos;
+using GigHub4.Core.Models;
+using GigHub4.Persistence;
 using Microsoft.AspNet.Identity;
 
-namespace GigHub.Controllers.API
+namespace GigHub4.Controllers.API
 {
     [Authorize]
+    [Route("api/followings")]
     public class FollowingsController : ApiController
     {
         private ApplicationDbContext _context;
@@ -17,24 +18,26 @@ namespace GigHub.Controllers.API
             _context = new ApplicationDbContext();
         }
 
-        [HttpPost]
+        [HttpPost()]
         public IHttpActionResult Follow(FollowingDto dto)
         {
             var userId = User.Identity.GetUserId();
+            var exist = _context.Followings.Any(f => f.FolloweeId == userId && f.FolloweeId == dto.FolloweeId);
 
-            if (_context.Followings.Any(f => f.FolloweeId == userId && f.FolloweeId == dto.FolloweeId))
-                return BadRequest("Following already exists.");
+            if (exist)
+                return BadRequest("Following already exist");
 
             var following = new Following
             {
-                FolloweeId =  userId,
-                FollowerId =  dto.FolloweeId
+                FolloweeId = userId,
+                FollowerId = dto.FolloweeId
             };
 
             _context.Followings.Add(following);
             _context.SaveChanges();
 
             return Ok();
+
         }
     }
 }

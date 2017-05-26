@@ -1,7 +1,7 @@
-namespace GigHub.Core.Dtos
+﻿namespace GigHub4.Core.Dtos
 {
     public class AttendanceDto
     {
-        public int GigId { get; set; }    
+        public int GigId { get; set; }
     }
 }

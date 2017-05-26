@@ -1,11 +1,23 @@
-﻿@model GigHub.Core.ViewModels.GigsViewModel
-
+﻿@model GigHub4.Core.ViewModels.GigsViewModel
 @{
     ViewBag.Title = "Home Page";
 }
-
 <h1>@Model.Heading</h1>
-<ul id="gigs" class="gigs voffset3">
+@using (Html.BeginForm("Search", "Gigs"))
+{
+    <div class="form-group">
+        <div class="input-group" id="searchGigs">
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder ="Search by artist, genre..."})
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+        
+    </div>
+    @*<input type="submit" value="Search" />*@
+}
+
+<ul class="gigs voffset4">
     @foreach (var gig in Model.UpComingGigs)
     {
         <li>
@@ -19,34 +31,29 @@
             </div>
             <div class="details">
                 <span class="artist">
-                    <a href="@Url.Action("Details", "Gigs", new {id = gig.Id})">
-                        @gig.Artist.Name                        
-                    </a>
-
-                    @if (gig.IsCanceled)
+                    <a href="@Url.Action("Details", "Gigs", new { Id = @gig.Id})">@gig.Artist.Name</a>
+                    
+                      @if (@gig.IsCanceled)
                     {
                         <span class="label label-warning">Canceled</span>
                     }
 
                     @if (Model.ShowActions)
                     {
-                        <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@gig.ArtistId">Follow</button>
+                        <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@gig.ArtistId">Follow?</button>
                     }
-
                 </span>
                 <span class="genre">
                     @gig.Genre.Name
+
+                    @if (Model.ShowActions && !gig.IsCanceled)
+                    {
+                        <button 
+                                data-gig-id="@gig.Id" 
+                                class="btn @(Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-default") 
+                                btn-sm pull-right js-toggle-attendance">Going ?</button>
+                    }
                 </span>
-                @if (Model.ShowActions && !gig.IsCanceled)
-                {
-                    <button
-                        data-gig-id="@gig.Id"
-                        class="btn 
-                            @(Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-default") 
-                            btn-default btn-sm pull-right js-toggle-attendance">
-                        Going?
-                    </button>
-                }
             </div>
         </li>
     }
@@ -55,18 +62,32 @@
 {
     <script>
         $(document).ready(function() {
-            GigsController.Init("#gigs");
+            $(".js-toggle-attendance").click(function(e) {
 
-            $(".js-toggle-follow").click(function (e) {
                 var button = $(e.target);
-                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                    .done(function () {
-                        button.text("Following!");
+                $.post("/api/attendances", { gigId: button.attr("data-gig-id") })
+                    .done(function() {
+                        button
+                            .removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Going");
                     })
-                    .fail(function () {
-                        alert("Something failed!");
+                    .fail(function() {
+                        alert("Something went wrong.");
                     });
             });
-        });
+
+            $(".js-toggle-follow").click(function(e) {
+
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function() {
+                        button.text("Following");
+                    })
+                    .fail(function() {
+                        alert("something failed");
+                    });
+            });
+        })
     </script>
 }

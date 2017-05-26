@@ -1,10 +1,19 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace GigHub.Core.Models
+namespace GigHub4.Core.Models
 {
     public class Notification
     {
+        public int Id { get; private set; }
+        public DateTime DateTime { get; private set; }
+        public NotificationType Type { get; private set; }
+        public DateTime? OriginialDateTime { get; private set; }
+        public string OriginalVenue { get; private set; }
+
+        [Required]
+        public Gig Gig { get; private set; }
+
         protected Notification()
         {
             
@@ -15,30 +24,20 @@ namespace GigHub.Core.Models
             if (gig == null)
                 throw new ArgumentNullException("gig");
 
-            DateTime = DateTime.Now;
+            Type = type;
             Gig = gig;
-            Type = NotificationType.GigCanceled;
+            DateTime = DateTime.Now;   
         }
-
-        public int Id { get; private set; }
-        public DateTime DateTime { get; private set; }
-        public NotificationType Type { get; private set; }
-        public DateTime? OriginalDateTime { get; private set; }
-        public string OriginalVenue { get; private set; }
-
-        [Required]
-        public Gig Gig { get; private set; }
 
         public static Notification GigCreated(Gig gig)
         {
             return new Notification(NotificationType.GigCreated, gig);
         }
-
-        public static Notification GigUpdated(Gig newGig, DateTime OriginialDateTime, string originalVenue)
+        public static Notification GigUpdated(Gig gig, DateTime originialDateTime, string originalVenue)
         {
-            var notification = new Notification(NotificationType.GigUpdated, newGig);
-            notification.OriginalDateTime = OriginialDateTime;
+            var notification = new Notification(NotificationType.GigUpdate, gig);
             notification.OriginalVenue = originalVenue;
+            notification.OriginialDateTime = originialDateTime;
 
             return notification;
         }
@@ -47,6 +46,5 @@ namespace GigHub.Core.Models
         {
             return new Notification(NotificationType.GigCanceled, gig);
         }
-
     }
 }

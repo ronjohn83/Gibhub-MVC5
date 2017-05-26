@@ -1,9 +1,9 @@
-﻿using GigHub.Core.Models;
+using GigHub4.Core.Models;
 
-namespace GigHub.Core.Repositories
+namespace GigHub4.Core.Repositories
 {
     public interface IFollowingRepository
     {
-        bool GetFollowing(Gig gig, string userId);
+        bool GetFollowing(string userId, Gig gig);
     }
 }

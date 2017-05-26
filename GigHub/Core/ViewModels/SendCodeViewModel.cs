@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GigHub.Core.ViewModels
+namespace GigHub4.Core.ViewModels
 {
     public class SendCodeViewModel
     {

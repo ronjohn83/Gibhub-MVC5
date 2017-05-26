@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GigHub.Core.Models.Gig>
+﻿@model IEnumerable<GigHub4.Core.Models.Gig>
 @{
     ViewBag.Title = "Mine";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,7 +6,7 @@
 
 <h2>My Upcoming Gigs</h2>
 
-<ul class="gigs voffset3">
+<ul class="gigs voffset4">
     @foreach (var gig in Model)
     {
         <li>
@@ -21,16 +21,14 @@
             <div class="details">
                 <span class="artist">
                     @gig.Venue
-
                 </span>
                 <span class="genre">
                     @gig.Genre.Name
                 </span>
                 <div class="actions">
-                    <a href="@Url.Action("Edit", "Gigs", new {id = gig.Id})">
-                        Edit
-                    </a> |
-                    <a href="#" data-gig-id="@gig.Id" class="js-cancel-gig">
+                    <a href="@Url.Action("Edit", "Gigs", new {Id = @gig.Id})">Edit</a>
+                    |
+                    <a href="#" class="js-cancel-gig" data-gig-id="@gig.Id">
                         Cancel
                     </a>
                 </div>
@@ -43,6 +41,7 @@
     <script>
         $(document).ready(function() {
             $(".js-cancel-gig").click(function(e) {
+
                 var link = $(e.target);
 
                 var dialog = bootbox.dialog({
@@ -52,17 +51,17 @@
                         no: {
                             label: "No",
                             className: "btn-default",
-                            callback: function() {
+                            callback: function () {
                                 dialog.hideAll();
                             }
                         },
                         yes: {
                             label: "Yes",
                             className: "btn-danger",
-                            callback: function() {
+                            callback: function () {
                                 $.ajax({
                                     url: "/api/gigs/" + link.attr("data-gig-id"),
-                                    method: "Delete"
+                                    method: "DELETE"
                                 })
                               .done(function () {
                                   link.parents("li").fadeOut(function () {
@@ -70,14 +69,15 @@
                                   });
                               })
                               .fail(function () {
-
+                                  alert("Something went wrong!");
                               });
                             }
                         }
-                        
+
                     }
                 });
             });
         })
     </script>
 }
+

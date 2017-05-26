@@ -4,19 +4,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace GigHub.Core.Models
+namespace GigHub4.Core.Models
 {
     public class Gig
     {
-        public Gig()
-        {
-            Attendances = new Collection<Attendance>();
-        }
-
         public int Id { get; set; }
 
         public bool IsCanceled { get; private set; }
-        
+
         public ApplicationUser Artist { get; set; }
 
         [Required]
@@ -35,22 +30,26 @@ namespace GigHub.Core.Models
 
         public ICollection<Attendance> Attendances { get; private set; }
 
+        public Gig()
+        {
+            Attendances = new Collection<Attendance>();
+        }
+
         public void Cancel()
         {
             IsCanceled = true;
 
-            var notification = Notification.GigCanceled(this);
-
             foreach (var attendee in Attendances.Select(a => a.Attendee))
             {
-                attendee.Notify(notification);
+                attendee.Notify(Notification.GigCanceled(this));
             }
 
         }
 
         public void Modify(DateTime dateTime, string venue, byte genre)
         {
-            var notification = Notification.GigUpdated(this, DateTime, Venue);
+
+            var notification = Notification.GigUpdated(this, dateTime, venue);
 
             Venue = venue;
             DateTime = dateTime;

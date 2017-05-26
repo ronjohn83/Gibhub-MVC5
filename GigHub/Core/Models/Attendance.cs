@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GigHub.Core.Models
+namespace GigHub4.Core.Models
 {
     public class Attendance
     {

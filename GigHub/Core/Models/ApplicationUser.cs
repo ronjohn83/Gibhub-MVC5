@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace GigHub.Core.Models
+namespace GigHub4.Core.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
@@ -23,7 +23,7 @@ namespace GigHub.Core.Models
         {
             Followers = new Collection<Following>();
             Followees = new Collection<Following>();
-            UserNotifications = new List<UserNotification>();
+            UserNotifications = new Collection<UserNotification>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -38,5 +38,7 @@ namespace GigHub.Core.Models
         {
             UserNotifications.Add(new UserNotification(this, notification));
         }
+
+ 
     }
 }

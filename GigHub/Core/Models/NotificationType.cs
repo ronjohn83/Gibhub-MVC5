@@ -1,9 +1,9 @@
-﻿namespace GigHub.Core.Models
+﻿namespace GigHub4.Core.Models
 {
     public enum NotificationType
     {
         GigCanceled = 1,
-        GigUpdated = 2,
+        GigUpdate = 2,
         GigCreated = 3
     }
 }

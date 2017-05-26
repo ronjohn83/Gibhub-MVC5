@@ -1,6 +1,6 @@
 ﻿using System;
-using GigHub.Core.Models;
-using GigHub.Persistance;
+using GigHub4.Core.Models;
+using GigHub4.Persistence;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -8,7 +8,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 
-namespace GigHub
+namespace GigHub4
 {
     public partial class Startup
     {

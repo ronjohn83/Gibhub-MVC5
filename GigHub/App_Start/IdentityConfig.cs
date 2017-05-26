@@ -5,15 +5,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using GigHub.Core.Models;
-using GigHub.Persistance;
+using GigHub4.Core.Models;
+using GigHub4.Persistence;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 
-namespace GigHub
+namespace GigHub4
 {
     public class EmailService : IIdentityMessageService
     {

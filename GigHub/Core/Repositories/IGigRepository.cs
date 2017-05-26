@@ -1,16 +1,15 @@
 using System.Collections.Generic;
-using GigHub.Core.Models;
+using GigHub4.Core.Models;
 
-namespace GigHub.Core.Repositories
+namespace GigHub4.Core.Repositories
 {
     public interface IGigRepository
     {
-        Gig GetGigWithAttendees(int gigId);
-        IEnumerable<Gig> GetGigsUserAttending(string userId);
-        IEnumerable<Gig> GetUpcomingGigsByArtist(string userId);
-        Gig GetGig(int id, string userId);
-        void AddGig(Gig gig);
-        void Save();
-        Gig GetGigWithArtistAndGenre(int id);
+        IEnumerable<Gig> GetGigUserAttending(string userId);
+        Gig GetGigWithAttendies(int id);
+        IEnumerable<Gig> GetUpcomingGigsForArtist(string userId);
+        Gig GetGig(int id);
+        Gig GetGigWithArtist(int id);
+        void Add(Gig gig);
     }
 }

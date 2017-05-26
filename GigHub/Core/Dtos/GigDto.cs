@@ -1,6 +1,6 @@
 using System;
 
-namespace GigHub.Core.Dtos
+namespace GigHub4.Core.Dtos
 {
     public class GigDto
     {
@@ -9,6 +9,7 @@ namespace GigHub.Core.Dtos
         public bool IsCanceled { get; set; }
 
         public UserDto Artist { get; set; }
+
 
         public DateTime DateTime { get; set; }
 

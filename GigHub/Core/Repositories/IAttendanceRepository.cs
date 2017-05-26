@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using GigHub.Core.Models;
+using System.Collections.Generic;
+using GigHub4.Core.Models;
 
-namespace GigHub.Core.Repositories
+namespace GigHub4.Core.Repositories
 {
     public interface IAttendanceRepository
     {
         IEnumerable<Attendance> GetFutureAttendances(string userId);
-        bool GetAttendees(Gig gig, string userId);
+        bool GetAttending(Gig gig, string userId);
     }
 }

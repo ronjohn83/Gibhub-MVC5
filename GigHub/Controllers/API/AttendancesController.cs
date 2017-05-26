@@ -1,57 +1,41 @@
-using Microsoft.AspNet.Identity;
 using System.Linq;
 using System.Web.Http;
-using GigHub.Core.Dtos;
-using GigHub.Core.Models;
-using GigHub.Persistance;
+using GigHub4.Core.Models;
+using GigHub4.Persistence;
+using Microsoft.AspNet.Identity;
 
-namespace GigHub.Controllers.API
+namespace GigHub4.Controllers.API
 {
     [Authorize]
+    [Route("api/attendances")]
     public class AttendancesController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public AttendancesController()
         {
-             _context = new ApplicationDbContext();
+            _context = new ApplicationDbContext();    
         }
 
-        [HttpPost]
-        public IHttpActionResult Attend(AttendanceDto dto)
+        [HttpPost()]
+        public IHttpActionResult Attend(Attendance dto)
         {
             var userId = User.Identity.GetUserId();
+            var exist = _context.Attendances.Any(a => a.AttendeeId == userId && a.GigId == dto.GigId);
 
-            if (_context.Attendances.Any(a => a.AttendeeId == userId && a.GigId == dto.GigId))
-                return BadRequest("The attendance already exists.");
+            if (exist)
+                return BadRequest("Attendee already exist.");
 
-            var attendance = new Attendance
+            var attend = new Attendance
             {
                 GigId = dto.GigId,
-                AttendeeId = userId
+                AttendeeId = User.Identity.GetUserId()
             };
 
-            _context.Attendances.Add(attendance);
+            _context.Attendances.Add(attend);
             _context.SaveChanges();
 
             return Ok();
-        }
-
-        [HttpDelete]
-        public IHttpActionResult DeleteAttendance(int id)
-        {
-            var userId = User.Identity.GetUserId();
-
-            var attandance = _context.Attendances
-                .SingleOrDefault(a => a.AttendeeId == userId && a.GigId == id);
-
-            if (attandance == null)
-                return NotFound();
-
-            _context.Attendances.Remove(attandance);
-            _context.SaveChanges();
-
-            return Ok(id);
         }
     }
 }

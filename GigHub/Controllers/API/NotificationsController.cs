@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
-using GigHub.Core.Dtos;
-using GigHub.Core.Models;
-using GigHub.Persistance;
+using GigHub4.Core.Dtos;
+using GigHub4.Core.Models;
+using GigHub4.Persistence;
 
-namespace GigHub.Controllers.API
+namespace GigHub4.Controllers.API
 {
     [Authorize]
     public class NotificationsController : ApiController
@@ -19,19 +19,17 @@ namespace GigHub.Controllers.API
             _context = new ApplicationDbContext();
         }
 
-        public IEnumerable<NotificationDto> GetNewNotification()
+        public IEnumerable<NotificationDto> GetNewNotifications()
         {
             var userId = User.Identity.GetUserId();
-
-            var notificaitons = _context.UserNotifications
+            var notifications = _context.UserNotifications
                 .Where(un => un.UserId == userId && !un.IsRead)
                 .Select(un => un.Notification)
-                .Include(n => n.Gig.Artist)
+                .Include(un => un.Gig.Artist)
                 .ToList();
 
-            //Mapper.Map<Notification, NotificationDto>();
 
-            return notificaitons.Select(n => new NotificationDto()
+            return notifications.Select(n => new NotificationDto()
             {
                 DateTime = n.DateTime,
                 Gig = new GigDto
@@ -45,13 +43,26 @@ namespace GigHub.Controllers.API
                     Id = n.Gig.Id,
                     IsCanceled = n.Gig.IsCanceled,
                     Venue = n.Gig.Venue
-
                 },
-                OriginalDateTime = n.OriginalDateTime,
                 OriginalVenue = n.OriginalVenue,
+                OriginalDateTime = n.OriginialDateTime,
                 Type = n.Type
-
             });
+        }
+
+        [HttpPost]
+        public IHttpActionResult MarkAsRead()
+        {
+            var userId = User.Identity.GetUserId();
+            var notifications = _context.UserNotifications
+                .Where(un => un.UserId == userId && !un.IsRead)
+                .ToList();
+
+            notifications.ForEach(n => n.Read());
+
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }

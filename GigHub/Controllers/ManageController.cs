@@ -3,12 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using GigHub.Core.ViewModels;
+using GigHub4.Core.Models;
+using GigHub4.Core.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
-namespace GigHub.Controllers
+namespace GigHub4.Controllers
 {
     [Authorize]
     public class ManageController : Controller

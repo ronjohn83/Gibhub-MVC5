@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using GigHub.Core.Models;
+﻿using System.Collections.Generic;
+using GigHub4.Core.Models;
 
-namespace GigHub.Core.Repositories
+namespace GigHub4.Core.Repositories
 {
     public interface IGenreRepository
     {

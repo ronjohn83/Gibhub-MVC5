@@ -1,7 +1,7 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(GigHub.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(GigHub.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(GigHub4.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(GigHub4.App_Start.NinjectWebCommon), "Stop")]
 
-namespace GigHub.App_Start
+namespace GigHub4.App_Start
 {
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
@@ -52,6 +52,7 @@ namespace GigHub.App_Start
                         .SelectAllClasses()
                         .BindDefaultInterface();
                 });
+
                 return kernel;
             }
             catch
@@ -67,7 +68,6 @@ namespace GigHub.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            
         }        
     }
 }
